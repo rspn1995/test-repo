@@ -30,3 +30,4 @@ This release is focused on preparing the application for the User Acceptance Tes
 1. Ensure the latest dependencies are installed by running:
    ```bash
    npm install
+   npm build
