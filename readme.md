@@ -1,8 +1,8 @@
-# Release Notes for SUP Branch
+# Release Notes for Release Branch
 
 ## Release Version: v1.0.0
 **Release Date:** 2024-10-09  
-**Branch:** `release-sup`
+**Branch:** `release`
 
 ### Overview
 This release is focused on preparing the application for the User Acceptance Testing (UAT) phase. It includes new features, improvements, and bug fixes to ensure the functionality is in line with business requirements.
