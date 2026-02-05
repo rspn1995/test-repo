@@ -37,7 +37,7 @@ jobs:
 
           echo "Branch detected: $BRANCH_NAME"
 
-          if [[ $BRANCH_NAME =~ ^release/ || $BRANCH_NAME == master ]]; then
+          if [[ $BRANCH_NAME =~ "^feature/" || $BRANCH_NAME == master ]]; then
             echo "is_allowed=true" >> "$GITHUB_OUTPUT"
           else
             echo "is_allowed=false" >> "$GITHUB_OUTPUT"
