@@ -43,13 +43,13 @@ jobs:
             echo "is_allowed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Run only for release or master
+      - name: Run only for feature or master
         if: steps.branch_check.outputs.is_allowed == 'true'
         run: |
-          echo "✅ Running job for release/master branch"
+          echo "✅ Running job for feature/master branch"
 
-      - name: Block non-release branches
+      - name: Block non-feature branches
         if: steps.branch_check.outputs.is_allowed == 'false'
         run: |
-          echo "❌ This workflow is allowed only for release/* or master branches"
+          echo "❌ This workflow is allowed only for feature/* or master branches"
           exit 1
