@@ -1,0 +1,55 @@
+name: Branch Check Pipeline
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to run manually (optional)'
+        required: false
+        default: ''
+
+jobs:
+  branch-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref_name }}
+
+      - name: Detect branch
+        id: branch_check
+        shell: bash
+        run: |
+          # Manual trigger branch override
+          if [[ -n "${{ github.event.inputs.branch }}" ]]; then
+            BRANCH_NAME="${{ github.event.inputs.branch }}"
+          else
+            BRANCH_NAME="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          fi
+
+          echo "Branch detected: $BRANCH_NAME"
+
+          if [[ $BRANCH_NAME =~ ^release/ || $BRANCH_NAME == master ]]; then
+            echo "is_allowed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_allowed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run only for release or master
+        if: steps.branch_check.outputs.is_allowed == 'true'
+        run: |
+          echo "✅ Running job for release/master branch"
+
+      - name: Block non-release branches
+        if: steps.branch_check.outputs.is_allowed == 'false'
+        run: |
+          echo "❌ This workflow is allowed only for release/* or master branches"
+          exit 1
